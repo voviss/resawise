@@ -1,8 +1,17 @@
 <template>
-  <div id="app" :data-theme="theme">
-    <button @click="toggleTheme">{{ theme === "light" ? "Dark Mode" : "Light Mode" }}</button>
-    <reservation-form @submitReservation="addReservation" :reservation="selectedReservation"></reservation-form>
-    <reservation-list :reservations="reservations" @selectReservation="selectReservation" @deleteReservation="deleteReservation"></reservation-list>
+  <div id="app" class="app">
+    <h1>ResaWise</h1>
+    <ReservationForm
+      ref="reservationForm"
+      :reservation="selectedReservation"
+      @submitReservation="addReservation"
+      @addToWaitingList="addToWaitingList"
+    />
+    <ReservationList
+      :reservations="reservations"
+      @removeReservation="removeReservation"
+      @editReservation="selectReservation"
+    />
   </div>
 </template>
 
@@ -18,98 +27,88 @@ export default {
   },
   data() {
     return {
-      theme: "light",
       reservations: [],
-      selectedReservation: null
+      selectedReservation: null,
+      waitingList: []
     };
   },
   methods: {
-    toggleTheme() {
-      this.theme = this.theme === "light" ? "dark" : "light";
-    },
     addReservation(reservation) {
       const index = this.reservations.findIndex((r) => r.id === reservation.id);
-      if (index > -1) {
-        this.reservations.splice(index, 1, reservation);
-      } else {
+      if (index === -1) {
         this.reservations.push(reservation);
+      } else {
+        this.reservations.splice(index, 1, reservation);
       }
-      this.selectedReservation = null;
+    },
+    addToWaitingList(entry) {
+      this.waitingList.push(entry);
+    },
+    removeReservation(id) {
+      const index = this.reservations.findIndex((r) => r.id === id);
+      this.reservations.splice(index, 1);
+      this.updateFromWaitingList();
+    },
+    updateFromWaitingList() {
+      if (this.waitingList.length > 0) {
+        const firstInLine = this.waitingList.shift();
+        this.$refs.reservationForm.reserveSlot(firstInLine.date, firstInLine.timeSlot);
+      }
     },
     selectReservation(reservation) {
       this.selectedReservation = reservation;
     },
-    deleteReservation(reservation) {
-      const index = this.reservations.findIndex((r) => r.id === reservation.id);
-      if (index > -1) {
-        this.reservations.splice(index, 1);
-      }
+    unselectReservation() {
+      this.selectedReservation = null;
     }
   }
 };
 </script>
 
 <style>
-  :root {
-    --background-light: #ffffff;
-    --background-dark: #121212;
-    --text-light: #000000;
-    --text-dark: #ffffff;
-    --accent: #4caf50;
-    --border-light: rgba(0, 0, 0, 0.12);
-    --border-dark: rgba(255, 255, 255, 0.12);
-  }
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #222;
+  color: white;
+  margin: 0;
+}
 
-  [data-theme="dark"] {
-    --background: var(--background-dark);
-    --text: var(--text-dark);
-    --border: var(--border-dark);
-  }
+.app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+}
 
-  [data-theme="light"] {
-    --background: var(--background-light);
-    --text: var(--text-light);
-    --border: var(--border-light);
-  }
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-  body {
-    background-color: var(--background);
-    color: var(--text);
-    font-family: "Roboto", sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+input[type="text"] {
+  background-color: #333;
+  color: white;
+  border: 1px solid #444;
+}
 
-  input,
-  select,
-  button {
-    font-family: inherit;
-  }
+input[type="text"]:focus {
+  outline: none;
+  border: 1px solid #777;
+}
 
-  h2 {
-    margin-bottom: 1rem;
-  }
+button {
+  background-color: #444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+button:hover {
+  background-color: #555;
+}
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  th,
-  td {
-    border: 1px solid var(--border);
-    padding: 0.5rem;
-    text-align: center;
-  }
-
-  th {
-    background-color: var(--accent);
-    color: var(--text-dark);
-  }
+button:disabled {
+  background-color: #333;
+  cursor: default;
+}
 </style>
