@@ -17,7 +17,7 @@
         <tr v-for="timeSlot in timeSlots" :key="timeSlot">
           <td>{{ timeSlot }}</td>
           <td v-for="day in weekdays" :key="day + timeSlot">
-            <button :disabled="false" @click="reserveSlot(day, timeSlot)">
+            <button :disabled="false" @click="reserveSlot(day, timeSlot)" :class="{ 'unavailable': !isAvailable(day, timeSlot) }">
               {{ isAvailable(day, timeSlot) ? "Available" : "Unavailable" }}
             </button>
           </td>
