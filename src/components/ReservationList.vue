@@ -4,23 +4,23 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <!-- <th>ID</th> -->
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
-            <th>Spot</th>
+            <th>Place Number</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="reservation in reservations" :key="reservation.id">
-            <td>{{ reservation.id }}</td>
+            <!-- <td>{{ reservation.id }}</td> -->
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
             <td>{{ reservation.spot }}</td>
             <td>
-              <button @click="editReservation(reservation)">Edit</button>
+              <!-- <button @click="editReservation(reservation)">Edit</button> -->
               <button @click="cancelReservation(reservation)">Cancel</button>
             </td>
           </tr>
@@ -31,7 +31,7 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <!-- <th>ID</th> -->
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
@@ -39,7 +39,7 @@
         </thead>
         <tbody>
           <tr v-for="reservation in waitingList" :key="reservation.id">
-            <td>{{ reservation.id }}</td>
+            <!-- <td>{{ reservation.id }}</td> -->
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
@@ -66,3 +66,11 @@
     }
   };
   </script>
+
+  
+<style scoped>
+button.cancel {
+  background-color: #f44336;
+  cursor: not-allowed;
+}
+</style>
