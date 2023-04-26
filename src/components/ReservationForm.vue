@@ -72,10 +72,6 @@ export default {
   },
   methods: {
     submitForm() {
-      if (!this.form.id) {
-        this.form.id = Date.now();
-      }
-      this.form.name = this.storedName;
       this.$emit("submitReservation", { ...this.form });
       this.resetForm();
     },
@@ -124,6 +120,10 @@ export default {
       }
       const date = this.getDateForDay(day);
       const availableSpots = this.getAvailableSpots(date, timeSlot);
+      if (!this.form.id) {
+          this.form.id = Date.now();
+        }
+        this.form.name = this.storedName;
       if (availableSpots.length === 0) {
         this.form.date = date;
         this.form.timeSlot = timeSlot;
@@ -135,7 +135,15 @@ export default {
         this.submitForm();
       }
 
-    }
+    },
+    reserveSlotFromWaitingList(id, name, date, timeSlot, spot) {
+        this.form.id = id;
+        this.form.name = name;
+        this.form.date = date;
+        this.form.timeSlot = timeSlot;
+        this.form.spot = spot;
+        this.submitForm();
+      }
   }
 };
 </script>
