@@ -4,18 +4,7 @@
       <form @submit.prevent="submitForm">
         <div>
           <label for="name">Name:</label>
-          <input type="text" id="name" v-model="form.name" required />
-        </div>
-        <div>
-          <label for="date">Date:</label>
-          <input type="date" id="date" v-model="form.date" :min="weekStart" :max="weekEnd" required />
-        </div>
-        <div>
-          <label for="timeSlot">Time Slot:</label>
-          <select id="timeSlot" v-model="form.timeSlot" required>
-            <option value="08:00-13:00">08:00-13:00</option>
-            <option value="13:00-18:00">13:00-18:00</option>
-          </select>
+          <input type="text" id="name" v-model="storedName" required />
         </div>
         <button type="submit">Submit</button>
       </form>
@@ -31,7 +20,12 @@
           <tr v-for="timeSlot in timeSlots" :key="timeSlot">
             <td>{{ timeSlot }}</td>
             <td v-for="day in weekdays" :key="day + timeSlot">
-              {{ isAvailable(day, timeSlot) ? 'Available' : 'Unavailable' }}
+              <button
+                :disabled="!isAvailable(day, timeSlot)"
+                @click="reserveSlot(day, timeSlot)"
+              >
+                {{ isAvailable(day, timeSlot) ? "Available" : "Unavailable" }}
+              </button>
             </td>
           </tr>
         </tbody>
@@ -54,6 +48,7 @@
           timeSlot: "08:00-13:00",
           spot: null
         },
+        storedName: localStorage.getItem("userName") || "",
         weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
         timeSlots: ["08:00-13:00", "13:00-18:00"]
       };
@@ -76,6 +71,9 @@
         if (newVal) {
           this.form = { ...newVal };
         }
+      },
+      storedName(newName) {
+        localStorage.setItem("userName", newName);
       }
     },
     methods: {
@@ -83,6 +81,7 @@
         if (!this.form.id) {
           this.form.id = Date.now();
         }
+        this.form.name = this.storedName;
         this.$emit("submitReservation", { ...this.form });
         this.resetForm();
       },
@@ -94,17 +93,17 @@
         this.form.spot = null;
       },
       isAvailable(day, timeSlot) {
-      const date = this.getDateForDay(day);
-      const availableSpots = this.getAvailableSpots(date, timeSlot);
-      return availableSpots.length > 0;
-    },
-    getDateForDay(day) {
-      const date = new Date(this.weekStart);
-      const dayIndex = this.weekdays.indexOf(day);
-      date.setDate(date.getDate() + dayIndex);
-      return date.toISOString().split("T")[0];
-    },
-    getAvailableSpots(date, timeSlot) {
+        const date = this.getDateForDay(day);
+        const availableSpots = this.getAvailableSpots(date, timeSlot);
+        return availableSpots.length > 0;
+      },
+      getDateForDay(day) {
+        const date = new Date(this.weekStart);
+        const dayIndex = this.weekdays.indexOf(day);
+        date.setDate(date.getDate() + dayIndex);
+        return date.toISOString().split("T")[0];
+      },
+      getAvailableSpots(date, timeSlot) {
       const spots = [1, 2];
       this.$root.reservations
         .filter((r) => r.date === date && r.timeSlot === timeSlot)
@@ -115,6 +114,18 @@
           }
         });
       return spots;
+    },
+    reserveSlot(day, timeSlot) {
+      if (!this.storedName) {
+        alert("Please enter your name before reserving a slot.");
+        return;
+      }
+      const date = this.getDateForDay(day);
+      const availableSpots = this.getAvailableSpots(date, timeSlot);
+      this.form.date = date;
+      this.form.timeSlot = timeSlot;
+      this.form.spot = availableSpots[0];
+      this.submitForm();
     }
   }
 };
