@@ -57,9 +57,6 @@
       waitingList: Array
     },
     methods: {
-      editReservation(reservation) {
-        this.$emit("editReservation", reservation);
-      },
       cancelReservation(reservation) {
         this.$emit("removeReservation", reservation.id);
       }
