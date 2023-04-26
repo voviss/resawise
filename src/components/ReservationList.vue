@@ -41,6 +41,9 @@
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
+            <td>
+              <button @click="cancelWaiting(reservation)">Cancel</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -57,8 +60,13 @@
     methods: {
       cancelReservation(reservation) {
         this.$emit("removeReservation", reservation.id);
+      },
+      cancelWaiting(reservation) {
+        //alert("cancelWaiting");
+        this.$emit("removeWaitingList", reservation.id);
       }
     }
+    
   };
   </script>
 

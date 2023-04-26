@@ -4,7 +4,9 @@
     <ReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
       @addToWaitingList="addWaitingList" />
     <ReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
-      @editReservation="selectReservation" />
+      @editReservation="selectReservation"
+      @removeWaitingList="removeFromWaitingList"
+       />
   </div>
 </template>
 
