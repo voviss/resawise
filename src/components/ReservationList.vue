@@ -13,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="reservation in reservations" :key="reservation.id">
+          <tr v-for="(reservation) in reservations" :key="reservation.id">
             <!-- <td>{{ reservation.id }}</td> -->
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
@@ -61,7 +61,7 @@
         this.$emit("editReservation", reservation);
       },
       cancelReservation(reservation) {
-        this.$emit("cancelReservation", reservation);
+        this.$emit("removeReservation", reservation.id);
       }
     }
   };
