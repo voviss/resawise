@@ -5,10 +5,11 @@
       ref="reservationForm"
       :reservation="selectedReservation"
       @submitReservation="addReservation"
-      @addToWaitingList="addToWaitingList"
+      @addToWaitingList="addWaitingList"
     />
     <ReservationList
       :reservations="reservations"
+      :waitingList="waitingList"
       @removeReservation="removeReservation"
       @editReservation="selectReservation"
     />
@@ -41,8 +42,10 @@ export default {
         this.reservations.splice(index, 1, reservation);
       }
     },
-    addToWaitingList(entry) {
-      this.waitingList.push(entry);
+    addWaitingList(reservation) {
+      console.log(this.waitingList);
+      this.waitingList.push(reservation);
+      console.log(this.waitingList);
     },
     removeReservation(id) {
       const index = this.reservations.findIndex((r) => r.id === id);
