@@ -3,7 +3,9 @@
     <h1>ResaWise</h1>
     <div class="tabs">
       <button :class="{ active: currentTab === 'parking' }" @click="currentTab = 'parking'">Car Parking</button>
-      <button :class="{ active: currentTab === 'sports' }" @click="currentTab = 'sports'">Sport Time Slots</button>
+      <button :class="{ active: currentTab === 'electric' }" @click="currentTab = 'electric'">Electric charging car parking</button>
+      <button :class="{ active: currentTab === 'sport' }" @click="currentTab = 'sport'">Sport Time Slots</button>
+      <button :class="{ active: currentTab === 'burger' }" @click="currentTab = 'burger'">Burger Time Slots</button>
     </div>
     <div v-if="currentTab === 'parking'">
       <ReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
@@ -11,10 +13,22 @@
       <ReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
         @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
     </div>
-    <div v-if="currentTab === 'sports'">
+    <div v-if="currentTab === 'electric'">
+      <ElectricReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
+        @addToWaitingList="addWaitingList" />
+      <ElectricReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
+        @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
+    </div>
+    <div v-if="currentTab === 'sport'">
       <SportReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
         @addToWaitingList="addWaitingList" />
       <SportReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
+        @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
+    </div>
+    <div v-if="currentTab === 'burger'">
+      <BurgerReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
+        @addToWaitingList="addWaitingList" />
+      <BurgerReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
         @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
     </div>
 
@@ -22,10 +36,14 @@
 </template>
 
 <script>
-import ReservationForm from "./components/ReservationForm.vue";
-import ReservationList from "./components/ReservationList.vue";
+import ReservationForm from "./components/parking/ReservationForm.vue";
+import ReservationList from "./components/parking/ReservationList.vue";
+import ElectricReservationForm from "./components/electric/ReservationForm.vue";
+import ElectricReservationList from "./components/electric/ReservationList.vue";
 import SportReservationForm from "./components/sport/ReservationForm.vue";
 import SportReservationList from "./components/sport/ReservationList.vue";
+import BurgerReservationForm from "./components/burger/ReservationForm.vue";
+import BurgerReservationList from "./components/burger/ReservationList.vue";
 
 export default {
   name: "App",
@@ -33,7 +51,11 @@ export default {
     ReservationForm,
     ReservationList,
     SportReservationForm,
-    SportReservationList
+    SportReservationList,
+    BurgerReservationForm,
+    BurgerReservationList,
+    ElectricReservationForm,
+    ElectricReservationList,
   },
   data() {
     return {
