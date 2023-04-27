@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2>Reservation Form</h2>
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" v-model="storedName" required />
-      </div>
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" v-model="storedName" required class="input-name" />
+    </div>
     <h2>Time Slots</h2>
     <table>
       <thead>
@@ -17,7 +17,8 @@
         <tr v-for="timeSlot in timeSlots" :key="timeSlot">
           <td>{{ timeSlot }}</td>
           <td v-for="day in weekdays" :key="day + timeSlot">
-            <button :disabled="false" @click="reserveSlot(day, timeSlot)" :class="{ 'unavailable': !isAvailable(day, timeSlot) }">
+            <button :disabled="false" @click="reserveSlot(day, timeSlot)"
+              :class="{ 'unavailable': !isAvailable(day, timeSlot) }">
               {{ isAvailable(day, timeSlot) ? "Available" : "Unavailable" }}
             </button>
           </td>
@@ -121,9 +122,9 @@ export default {
       const date = this.getDateForDay(day);
       const availableSpots = this.getAvailableSpots(date, timeSlot);
       if (!this.form.id) {
-          this.form.id = Date.now();
-        }
-        this.form.name = this.storedName;
+        this.form.id = Date.now();
+      }
+      this.form.name = this.storedName;
       if (availableSpots.length === 0) {
         this.form.date = date;
         this.form.timeSlot = timeSlot;
@@ -137,13 +138,13 @@ export default {
 
     },
     reserveSlotFromWaitingList(id, name, date, timeSlot, spot) {
-        this.form.id = id;
-        this.form.name = name;
-        this.form.date = date;
-        this.form.timeSlot = timeSlot;
-        this.form.spot = spot;
-        this.submitForm();
-      }
+      this.form.id = id;
+      this.form.name = name;
+      this.form.date = date;
+      this.form.timeSlot = timeSlot;
+      this.form.spot = spot;
+      this.submitForm();
+    }
   }
 };
 </script>
@@ -202,5 +203,9 @@ button:hover {
 button.unavailable {
   background-color: #f44336;
   cursor: not-allowed;
+}
+
+.input-name {
+  width: 200px;
 }
 </style>

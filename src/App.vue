@@ -4,9 +4,7 @@
     <ReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
       @addToWaitingList="addWaitingList" />
     <ReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
-      @editReservation="selectReservation"
-      @removeWaitingList="removeFromWaitingList"
-       />
+      @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
   </div>
 </template>
 
@@ -28,6 +26,34 @@ export default {
     };
   },
   methods: {
+    sortReservations(forms) {
+      forms.sort((a, b) => {
+        // Compare dates
+        let dateComparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+        if (dateComparison !== 0) {
+          return dateComparison;
+        }
+
+        // Compare timeSlots
+        let timeSlotComparison = a.timeSlot.localeCompare(b.timeSlot);
+        if (timeSlotComparison !== 0) {
+          return timeSlotComparison;
+        }
+
+        // Compare spots
+        let aSpot = a.spot === null || a.spot === "" ? Number.MAX_SAFE_INTEGER : a.spot;
+        let bSpot = b.spot === null || b.spot === "" ? Number.MAX_SAFE_INTEGER : b.spot;
+        let spotComparison = aSpot - bSpot;
+        if (spotComparison !== 0) {
+          return spotComparison;
+        }
+
+        // Compare ids
+        return a.id - b.id;
+      });
+
+      return forms; // Return the sorted array
+    },
     addReservation(reservation) {
       const index = this.reservations.findIndex((r) => r.id === reservation.id);
       if (index === -1) {
@@ -35,11 +61,11 @@ export default {
       } else {
         this.reservations.splice(index, 1, reservation);
       }
+      this.sortReservations(this.reservations);
     },
     addWaitingList(reservation) {
-      console.log(this.waitingList);
       this.waitingList.push(reservation);
-      console.log(this.waitingList);
+      this.sortReservations(this.waitingList);
     },
     removeReservation(id) {
       const index = this.reservations.findIndex((r) => r.id === id);

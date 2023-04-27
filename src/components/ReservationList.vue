@@ -9,7 +9,7 @@
             <th>Date</th>
             <th>Time Slot</th>
             <th>Place Number</th>
-            <th>Actions</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +34,7 @@
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
