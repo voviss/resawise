@@ -103,7 +103,7 @@ export default {
           firstWaitingReservation.date,
           firstWaitingReservation.timeSlot,
           deletedReservation.spot);
-        this.removeFromWaitingList(firstWaitingReservation.id);
+        this.removeFromWaitingList(firstWaitingReservation);
       }
     },
     selectReservation(reservation) {

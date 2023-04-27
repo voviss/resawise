@@ -4,17 +4,17 @@
       <table>
         <thead>
           <tr>
-            <!-- <th>ID</th> -->
+            <th>ID</th>
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
-            <th>Place Number</th>
+            <th>Place</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(reservation) in reservations.filter(l => l.type === 'parking')" :key="reservation.id">
-            <!-- <td>{{ reservation.id }}</td> -->
+            <td>{{ reservation.id }}</td>
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
@@ -31,6 +31,7 @@
       <table>
         <thead>
           <tr>
+            <th>id</th>
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
@@ -39,6 +40,7 @@
         </thead>
         <tbody>
           <tr v-for="reservation in waitingList.filter(l => l.type === 'parking')" :key="reservation.id">
+            <td>{{ reservation.id }}</td>
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>

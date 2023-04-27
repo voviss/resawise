@@ -8,7 +8,6 @@
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
-            <th>Place Number</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -18,7 +17,6 @@
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
-            <td>{{ reservation.spot }}</td>
             <td>
               <!-- <button @click="editReservation(reservation)">Edit</button> -->
               <button @click="cancelReservation(reservation)">Cancel</button>
