@@ -66,7 +66,7 @@
       },
       cancelWaiting(reservation) {
         //alert("cancelWaiting");
-        this.$emit("removeWaitingList", reservation.id);
+        this.$emit("removeWaitingList", reservation);
       }
     }
     
