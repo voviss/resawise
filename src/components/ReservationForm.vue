@@ -114,24 +114,39 @@ export default {
         });
       return spots;
     },
+    reservationExists(name, date, timeSlot, reservations) {
+      return reservations.some(form => {
+        return (
+          form.name === name &&
+          form.date === date &&
+          form.timeSlot === timeSlot
+        );
+      });
+    },
     reserveSlot(day, timeSlot) {
       if (!this.storedName) {
         alert("Please enter your name before reserving a slot.");
         return;
       }
-      const date = this.getDateForDay(day);
-      const availableSpots = this.getAvailableSpots(date, timeSlot);
       if (!this.form.id) {
         this.form.id = Date.now();
       }
       this.form.name = this.storedName;
+      this.form.date = this.getDateForDay(day);
+      this.form.timeSlot = timeSlot;
+      console.log("test");
+      if (this.reservationExists(this.form.name, this.form.date, this.form.timeSlot, this.$root.reservations)) {
+        alert("A reservation on your name is already done for the given date and time slot");
+        return;
+      }
+      if (this.reservationExists(this.form.name, this.form.date, this.form.timeSlot, this.$root.waitingList)) {
+        alert("You are in the waiting list already for the given date and time slot");
+        return;
+      }
+      const availableSpots = this.getAvailableSpots(this.form.date, timeSlot);
       if (availableSpots.length === 0) {
-        this.form.date = date;
-        this.form.timeSlot = timeSlot;
         this.submitToWaitingList();
       } else {
-        this.form.date = date;
-        this.form.timeSlot = timeSlot;
         this.form.spot = availableSpots[0];
         this.submitForm();
       }
