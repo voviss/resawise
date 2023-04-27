@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app">
     <h1>ResaWise</h1>
-    <div class="tabs">
+    <div class="tabs custom-tabs">
       <button :class="{ active: currentTab === 'parking' }" @click="currentTab = 'parking'">Car Parking</button>
       <button :class="{ active: currentTab === 'electric' }" @click="currentTab = 'electric'">Electric charging car parking</button>
       <button :class="{ active: currentTab === 'sport' }" @click="currentTab = 'sport'">Sport Time Slots</button>
@@ -184,5 +184,33 @@ button:hover {
 button:disabled {
   background-color: #333;
   cursor: default;
+}
+
+.custom-tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.custom-tabs button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.custom-tabs button:hover {
+  color: #078827;
+  cursor: pointer;
+}
+
+.custom-tabs button.active {
+  border-bottom: 4px solid #078827;
+  padding-bottom: 6px;
 }
 </style>
