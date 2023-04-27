@@ -179,7 +179,7 @@ label {
 }
 
 input {
-  width: 100%;
+  width: 20%;
   padding: 0.5rem;
   margin-bottom: 1rem;
 }
