@@ -19,7 +19,7 @@
           <td v-for="day in weekdays" :key="day + timeSlot">
             <button :disabled="false" @click="reserveSlot(day, timeSlot)"
               :class="{ 'unavailable': !isAvailable(day, timeSlot) }">
-              {{ isAvailable(day, timeSlot) ? "Available" : "Unavailable" }}
+              {{ isAvailable(day, timeSlot) ? "Available: " + getNumberOfAvailableSpots(day, timeSlot) : "Unavailable" }}
             </button>
           </td>
         </tr>
@@ -91,10 +91,13 @@ export default {
       this.form.timeSlot = "";
       this.form.spot = null;
     },
-    isAvailable(day, timeSlot) {
+    getNumberOfAvailableSpots(day, timeSlot) {
       const date = this.getDateForDay(day);
       const availableSpots = this.getAvailableSpots(date, timeSlot);
-      return availableSpots.length > 0;
+      return availableSpots.length;
+    },
+    isAvailable(day, timeSlot) {
+      return this.getNumberOfAvailableSpots(day, timeSlot) > 0;
     },
     getDateForDay(day) {
       const date = new Date(this.weekStart);
