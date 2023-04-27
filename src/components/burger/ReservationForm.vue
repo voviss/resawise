@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Reservation Form</h2>
+    <h2>Burger Reservation</h2>
     <div>
       <label for="name">Name:</label>
       <input type="text" id="name" v-model="storedName" required class="input-name" />
@@ -30,7 +30,7 @@
   
 <script>
 export default {
-  name: "ReservationForm",
+  name: "BurgerReservationForm",
   props: {
     reservation: Object
   },
@@ -41,11 +41,12 @@ export default {
         name: "",
         date: "",
         timeSlot: null,
-        spot: null
+        spot: null,
+        type: "burger"
       },
       storedName: localStorage.getItem("userName") || "",
-      weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      timeSlots: ["08:00-13:00", "13:00-18:00"]
+      weekdays: ["Friday"],
+      timeSlots: ["11:30-11:40", "11:40-11:50", "11:50-12:00", "12:00-12:10", "12:10-12:20", "12:20-12:30", "12:30-12:40","12:40-12:50","12:50-13:00", "13:00-13:10", "13:10-13:20", "13:20-13:30", "13:30-13:40", "13:40-13:50", "13:50-14:00"]
     };
   },
   computed: {
@@ -106,7 +107,7 @@ export default {
       return date.toISOString().split("T")[0];
     },
     getAvailableSpots(date, timeSlot) {
-      const spots = [1, 2];
+      const spots = [1,2,3,4,5,6,7,8,9,10];
       this.$root.reservations
         .filter((r) => r.date === date && r.timeSlot === timeSlot)
         .forEach((r) => {

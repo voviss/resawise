@@ -1,25 +1,65 @@
 <template>
   <div id="app" class="app">
     <h1>ResaWise</h1>
-    <ReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
-      @addToWaitingList="addWaitingList" />
-    <ReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
-      @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
+    <div class="tabs">
+      <button :class="{ active: currentTab === 'parking' }" @click="currentTab = 'parking'">Car Parking</button>
+      <button :class="{ active: currentTab === 'electric' }" @click="currentTab = 'electric'">Electric charging car parking</button>
+      <button :class="{ active: currentTab === 'sport' }" @click="currentTab = 'sport'">Sport Time Slots</button>
+      <button :class="{ active: currentTab === 'burger' }" @click="currentTab = 'burger'">Burger Time Slots</button>
+    </div>
+    <div v-if="currentTab === 'parking'">
+      <ReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
+        @addToWaitingList="addWaitingList" />
+      <ReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
+        @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
+    </div>
+    <div v-if="currentTab === 'electric'">
+      <ElectricReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
+        @addToWaitingList="addWaitingList" />
+      <ElectricReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
+        @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
+    </div>
+    <div v-if="currentTab === 'sport'">
+      <SportReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
+        @addToWaitingList="addWaitingList" />
+      <SportReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
+        @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
+    </div>
+    <div v-if="currentTab === 'burger'">
+      <BurgerReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
+        @addToWaitingList="addWaitingList" />
+      <BurgerReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
+        @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
+    </div>
+
   </div>
 </template>
 
 <script>
-import ReservationForm from "./components/ReservationForm.vue";
-import ReservationList from "./components/ReservationList.vue";
+import ReservationForm from "./components/parking/ReservationForm.vue";
+import ReservationList from "./components/parking/ReservationList.vue";
+import ElectricReservationForm from "./components/electric/ReservationForm.vue";
+import ElectricReservationList from "./components/electric/ReservationList.vue";
+import SportReservationForm from "./components/sport/ReservationForm.vue";
+import SportReservationList from "./components/sport/ReservationList.vue";
+import BurgerReservationForm from "./components/burger/ReservationForm.vue";
+import BurgerReservationList from "./components/burger/ReservationList.vue";
 
 export default {
   name: "App",
   components: {
     ReservationForm,
-    ReservationList
+    ReservationList,
+    SportReservationForm,
+    SportReservationList,
+    BurgerReservationForm,
+    BurgerReservationList,
+    ElectricReservationForm,
+    ElectricReservationList,
   },
   data() {
     return {
+      currentTab: "parking",
       reservations: [],
       selectedReservation: null,
       waitingList: []
@@ -55,7 +95,7 @@ export default {
       return forms; // Return the sorted array
     },
     addReservation(reservation) {
-      const index = this.reservations.findIndex((r) => r.id === reservation.id);
+      const index = this.reservations.findIndex((r) => r.id === reservation.id && r.type === reservation.type);
       if (index === -1) {
         this.reservations.push(reservation);
       } else {
@@ -67,17 +107,17 @@ export default {
       this.waitingList.push(reservation);
       this.sortReservations(this.waitingList);
     },
-    removeReservation(id) {
-      const index = this.reservations.findIndex((r) => r.id === id);
+    removeReservation(reservation) {
+      const index = this.reservations.findIndex((r) => r.id === reservation.id && r.type === reservation.type);
       const deletedReservations = this.reservations.splice(index, 1);
       this.updateFromWaitingList(deletedReservations[0]);
     },
-    removeFromWaitingList(id) {
-      const index = this.waitingList.findIndex((r) => r.id === id);
+    removeFromWaitingList(reservation) {
+      const index = this.waitingList.findIndex((r) => r.id === reservation.id && r.type === reservation.type);
       this.waitingList.splice(index, 1);
     },
     updateFromWaitingList(deletedReservation) {
-      const firstWaitingReservation = this.waitingList.find((r) => r.date === deletedReservation.date && r.timeSlot === deletedReservation.timeSlot);
+      const firstWaitingReservation = this.waitingList.find((r) => r.date === deletedReservation.date && r.timeSlot === deletedReservation.timeSlot && r.type === deletedReservation.type);
       if (firstWaitingReservation) {
         this.$refs.reservationForm.reserveSlotFromWaitingList(
           firstWaitingReservation.id,
@@ -85,7 +125,7 @@ export default {
           firstWaitingReservation.date,
           firstWaitingReservation.timeSlot,
           deletedReservation.spot);
-        this.removeFromWaitingList(firstWaitingReservation.id);
+        this.removeFromWaitingList(firstWaitingReservation);
       }
     },
     selectReservation(reservation) {
@@ -99,6 +139,7 @@ export default {
 </script>
 
 <style>
+
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #222;

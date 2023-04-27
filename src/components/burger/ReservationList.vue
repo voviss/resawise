@@ -8,17 +8,15 @@
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
-            <th>Place Number</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(reservation) in reservations" :key="reservation.id">
+          <tr v-for="(reservation) in reservations.filter(l => l.type === 'burger')" :key="reservation.id">
             <!-- <td>{{ reservation.id }}</td> -->
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
-            <td>{{ reservation.spot }}</td>
             <td>
               <!-- <button @click="editReservation(reservation)">Edit</button> -->
               <button @click="cancelReservation(reservation)">Cancel</button>
@@ -38,7 +36,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="reservation in waitingList" :key="reservation.id">
+          <tr v-for="reservation in waitingList.filter(l => l.type === 'burger')" :key="reservation.id">
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
@@ -53,18 +51,18 @@
   
   <script>
   export default {
-    name: "ReservationList",
+    name: "SportReservationList",
     props: {
       reservations: Array,
       waitingList: Array
     },
     methods: {
       cancelReservation(reservation) {
-        this.$emit("removeReservation", reservation.id);
+        this.$emit("removeReservation", reservation);
       },
       cancelWaiting(reservation) {
         //alert("cancelWaiting");
-        this.$emit("removeWaitingList", reservation.id);
+        this.$emit("removeWaitingList", reservation);
       }
     }
     
