@@ -4,7 +4,6 @@
       <table>
         <thead>
           <tr>
-            <!-- <th>ID</th> -->
             <th>Name</th>
             <th>Date</th>
             <th>Time Slot</th>
@@ -13,7 +12,6 @@
         </thead>
         <tbody>
           <tr v-for="(reservation) in reservations.filter(l => l.type === 'sport')" :key="reservation.id">
-            <!-- <td>{{ reservation.id }}</td> -->
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
