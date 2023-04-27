@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Electric charging parking Reservation Form</h2>
+    <h2>Electric Charging Reservation</h2>
     <div>
       <label for="name">Name:</label>
       <input type="text" id="name" v-model="storedName" required class="input-name" />
