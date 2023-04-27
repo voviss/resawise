@@ -13,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(reservation) in reservations.filter(l => l.type === 'parking')" :key="reservation.id">
+          <tr v-for="(reservation) in reservations.filter(l => l.type === 'sport')" :key="reservation.id">
             <!-- <td>{{ reservation.id }}</td> -->
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
@@ -38,7 +38,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="reservation in waitingList.filter(l => l.type === 'parking')" :key="reservation.id">
+          <tr v-for="reservation in waitingList.filter(l => l.type === 'sport')" :key="reservation.id">
             <td>{{ reservation.name }}</td>
             <td>{{ reservation.date }}</td>
             <td>{{ reservation.timeSlot }}</td>
@@ -53,14 +53,14 @@
   
   <script>
   export default {
-    name: "ReservationList",
+    name: "SportReservationList",
     props: {
       reservations: Array,
       waitingList: Array
     },
     methods: {
       cancelReservation(reservation) {
-        this.$emit("removeReservation", reservation);
+        this.$emit("removeReservation", reservation.id);
       },
       cancelWaiting(reservation) {
         //alert("cancelWaiting");

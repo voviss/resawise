@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Reservation Form</h2>
+    <h2>Sport Reservation</h2>
     <div>
       <label for="name">Name:</label>
       <input type="text" id="name" v-model="storedName" required class="input-name" />
@@ -30,7 +30,7 @@
   
 <script>
 export default {
-  name: "ReservationForm",
+  name: "SportReservationForm",
   props: {
     reservation: Object
   },
@@ -42,11 +42,11 @@ export default {
         date: "",
         timeSlot: null,
         spot: null,
-        type: "parking"
+        type: "sport"
       },
       storedName: localStorage.getItem("userName") || "",
       weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      timeSlots: ["08:00-13:00", "13:00-18:00"]
+      timeSlots: ["07:00-08:00", "08:00-9:00", "09:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00"]
     };
   },
   computed: {
@@ -107,7 +107,7 @@ export default {
       return date.toISOString().split("T")[0];
     },
     getAvailableSpots(date, timeSlot) {
-      const spots = [1, 2];
+      const spots = [1,2,3,4,5];
       this.$root.reservations
         .filter((r) => r.date === date && r.timeSlot === timeSlot)
         .forEach((r) => {
