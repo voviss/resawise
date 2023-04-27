@@ -4,9 +4,7 @@
     <ReservationForm ref="reservationForm" :reservation="selectedReservation" @submitReservation="addReservation"
       @addToWaitingList="addWaitingList" />
     <ReservationList :reservations="reservations" :waitingList="waitingList" @removeReservation="removeReservation"
-      @editReservation="selectReservation"
-      @removeWaitingList="removeFromWaitingList"
-       />
+      @editReservation="selectReservation" @removeWaitingList="removeFromWaitingList" />
   </div>
 </template>
 
@@ -40,6 +38,14 @@ export default {
         let timeSlotComparison = a.timeSlot.localeCompare(b.timeSlot);
         if (timeSlotComparison !== 0) {
           return timeSlotComparison;
+        }
+
+        // Compare spots
+        let aSpot = a.spot === null || a.spot === "" ? Number.MAX_SAFE_INTEGER : a.spot;
+        let bSpot = b.spot === null || b.spot === "" ? Number.MAX_SAFE_INTEGER : b.spot;
+        let spotComparison = aSpot - bSpot;
+        if (spotComparison !== 0) {
+          return spotComparison;
         }
 
         // Compare ids
