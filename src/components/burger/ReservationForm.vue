@@ -102,7 +102,8 @@ export default {
     },
     getDateForDay(day) {
       const date = new Date(this.weekStart);
-      const dayIndex = this.weekdays.indexOf(day);
+      this.weekdays.indexOf(day)
+      const dayIndex = 4;
       date.setDate(date.getDate() + dayIndex);
       return date.toISOString().split("T")[0];
     },
